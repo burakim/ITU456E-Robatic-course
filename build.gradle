@@ -10,6 +10,8 @@ buildscript {
     }
 }
 
+
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
@@ -34,7 +36,20 @@ dependencies {
     // end::actuator[]
     testCompile("junit:junit")
 }
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/main/res/utils/playground.pgm"
+    into "${buildDir}/classes/utils/playground.pgm"
+}
+sourceSets {
+    main {
+        java {
+            srcDir 'src/java'
+            srcDir 'src/res'
+        }
+        resources { srcDir 'src/res' }
+    }
 
+}
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }

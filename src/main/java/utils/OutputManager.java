@@ -13,6 +13,8 @@ import java.util.Stack;
 public class OutputManager {
     private String filename;
     private Stack<Node> path;
+    private String bashLocation;
+    private ProcessBuilder processBuilder;
 
     public String getFilename() {
         return filename;
@@ -32,7 +34,11 @@ public class OutputManager {
 
     public void write() throws FileNotFoundException, UnsupportedEncodingException {
         PrintWriter writer= new PrintWriter("route.txt","UTF-8");
+        //// TODO: 22/12/15 Process calistirma eklenilmeli, diger ekip uyeleri ile absolute bir path bulunmali
+        //processBuilder = new ProcessBuilder("/var/");
+
         Node newest = null;
+        this.bashLocation = bashLocation;
         Node oldest = null;
         int size1 = path.size();
         double resolution_ratio = 10.0;

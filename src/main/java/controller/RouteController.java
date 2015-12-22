@@ -50,6 +50,7 @@ public class RouteController {
             graphCreator.print();
 
 
+            routeGetResponse.setResultCode(58);
 
         System.out.println("dlajshdja");
 
