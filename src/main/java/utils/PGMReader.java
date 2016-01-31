@@ -2,10 +2,7 @@ package utils;
 
 import model.PGMStructure;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -15,7 +12,8 @@ public class PGMReader {
     private String fileName;
 
     public PGMStructure readFile() throws IOException {
-        FileInputStream fileInputStream = new FileInputStream(new File(getClass().getResource("/utils/playground.pgm").getPath()));
+        System.out.println("Path => " + getClass().getResource("playground.pgm").getPath());
+        InputStream fileInputStream = getClass().getResourceAsStream("playground.pgm");
 //        FileInputStream fileInputStream = new FileInputStream(new File("./playground.pgm"));
 
 
@@ -33,7 +31,7 @@ public class PGMReader {
         fileInputStream.close();
 
         // Now parse the file as binary data
-        fileInputStream = new FileInputStream(new File(getClass().getResource("/utils/playground.pgm").getPath()));
+        fileInputStream = getClass().getResourceAsStream("playground.pgm");
         DataInputStream dis = new DataInputStream(fileInputStream);
 
         // look for 4 lines (i.e.: the header) and discard them
@@ -41,24 +39,33 @@ public class PGMReader {
         while (numnewlines > 0) {
             char c;
             do {
-                c = (char)(dis.readUnsignedByte());
+                c = (char) (dis.readUnsignedByte());
             } while (c != '\n');
             numnewlines--;
         }
-
-        // read the image data
-        int height =pgmStructure.getHeight();
-        int width  = pgmStructure.getWidth();
-        pgmStructure.setImage(new int[pgmStructure.getHeight()][pgmStructure.getWidth()]);
+        int height = pgmStructure.getHeight();
+        int width = pgmStructure.getWidth();
+        int[][] temp = new int[height][width];
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                pgmStructure.getImage()[row][col] = dis.readUnsignedByte();
-                System.out.print(pgmStructure.getImage()[row][col] + " ");
+                temp[row][col] = dis.readUnsignedByte();
+                //System.out.print(temp[row][col] + " ");
             }
-            System.out.println();
-
+            //System.out.println();
         }
-        pgmStructure.setPatternSize(5);
+
+        pgmStructure.setImage(new int[pgmStructure.getWidth()][pgmStructure.getHeight()]);
+        pgmStructure.setHeight(width);
+        pgmStructure.setWidth(height);
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                pgmStructure.getImage()[col][height - row - 1] = temp[row][col];
+                //System.out.print(pgmStructure.getImage()[col][row] + " ");
+            }
+            //System.out.println();
+        }
+
+        pgmStructure.setPatternSize(3);
         return pgmStructure;
     }
 }

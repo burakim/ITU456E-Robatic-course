@@ -36,17 +36,25 @@ dependencies {
     // end::actuator[]
     testCompile("junit:junit")
 }
-task copyTestResources(type: Copy) {
-    from "${projectDir}/src/main/res/utils/playground.pgm"
-    into "${buildDir}/classes/utils/playground.pgm"
-}
+
 sourceSets {
     main {
         java {
-            srcDir 'src/java'
-            srcDir 'src/res'
+            srcDir 'src/main/java'
         }
-        resources { srcDir 'src/res' }
+        resources {
+            srcDir 'src/main/res'
+            println "java.srcDirs = ${java.srcDirs}"
+            println "resources.srcDirs = ${resources.srcDirs}"
+            println "java.files = ${java.files.name}"
+            println "allJava.files = ${allJava.files.name}"
+            println "resources.files = ${resources.files.name}"
+            println "allSource.files = ${allSource.files.name}"
+            println "output.classesDir = ${output.classesDir}"
+            println "output.resourcesDir = ${output.resourcesDir}"
+            println "output.files = ${output.files}"
+
+        }
     }
 
 }

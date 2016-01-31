@@ -36,7 +36,6 @@ public class AstarAlgorithm {
                     path.add(came_from.get(searched));
                     searched = came_from.get(searched);
                 }
-                System.out.print("dklajsda");
                 break;
             }
             for(Node child: current.getChildren() ) {

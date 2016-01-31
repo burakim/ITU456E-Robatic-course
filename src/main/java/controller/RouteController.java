@@ -13,6 +13,7 @@ import response.RouteGetResponse;
 import utils.GraphCreator;
 import utils.OutputManager;
 import utils.PGMReader;
+import utils.ProcessManager;
 import utils.algorithms.AstarAlgorithm;
 
 import java.io.IOException;
@@ -30,29 +31,28 @@ public class RouteController {
             routeGetResponse.setResultCode(67);
             routeGetResponse.setMessage("Route request is null.");
         }
-
+        ProcessManager processManager = new ProcessManager();
         PGMReader pgmReader = new PGMReader();
         OutputManager outputManager = new OutputManager();
             GraphCreator graphCreator = new GraphCreator(pgmReader.readFile());
-            graphCreator.print();
+           graphCreator.print();
             AstarAlgorithm astar = new AstarAlgorithm();
             Stack<Node> path = astar.Search(graphCreator.getData()[request.getFromX()][request.getFromY()], graphCreator.getData()[request.getToX()][request.getToY()]);
             outputManager.setPath(path);
-            outputManager.write();
-
-            while(path.size()>0)
-            {
-                Node node = path.pop();
-                graphCreator.getData()[node.getX()][node.getY()].setPath(true);
-            }
-            System.out.println();
-            System.out.println();
-            graphCreator.print();
+            outputManager.write(request.getFromX(),request.getFromY());
+            processManager.startProcess();
+//            while(path.size()>0)
+//            {
+//                Node node = path.pop();
+//                graphCreator.getData()[node.getX()][node.getY()].setPath(true);
+//            }
+//            System.out.println();
+//            System.out.println();
+//            graphCreator.print();
 
 
             routeGetResponse.setResultCode(58);
 
-        System.out.println("dlajshdja");
 
 
     }
